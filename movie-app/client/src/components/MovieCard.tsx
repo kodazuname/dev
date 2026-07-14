@@ -30,7 +30,7 @@ export function MovieCard({
       <div className="space-y-3 p-5">
         <div className="flex items-start justify-between gap-4">
           <h2 className="text-xl font-bold tracking-tight">{title}</h2>
-          <button
+          {/*<button
             className={`rounded-full border px-3 py-1 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700 ${
               isFavorite
                 ? "border-sky-700 bg-sky-700 text-white"
@@ -41,7 +41,7 @@ export function MovieCard({
             onClick={() => onToggleFavorite(id)}
           >
             {isFavorite ? "Saved" : "Save"}
-          </button>
+          </button>*/}
         </div>
         <p className="text-sm text-slate-600">
           {genre} • {release_year}
@@ -50,7 +50,7 @@ export function MovieCard({
         <div className="flex items-center justify-between gap-3">
           <p className="text-sm font-bold text-sky-700">★ {rating}</p>
           <div className="flex gap-2">
-            <button
+            {/*<button
               className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:border-sky-700 hover:text-sky-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-700"
               type="button"
               disabled={isDeleting}
@@ -65,7 +65,7 @@ export function MovieCard({
               onClick={() => onDelete(movie)}
             >
               {isDeleting ? "Deleting..." : "Delete"}
-            </button>
+            </button>*/}
           </div>
         </div>
       </div>

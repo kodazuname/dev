@@ -105,63 +105,67 @@ def get_movie(movie_id: int):
     return movie_dict
 
 
-@app.put("/api/movies/{movie_id}", response_model=Movie)
-def update_movie(movie_id: int, movie_data: MovieCreate):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    # Сначала проверим, есть ли такой фильм
-    cursor.execute("SELECT poster_url FROM movie WHERE id = ?", (movie_id,))
-    row = cursor.fetchone()
-    if row is None:
-        conn.close()
-        raise HTTPException(status_code=404, detail="Movie not found")
-    
-    current_poster = row["poster_url"] if row["poster_url"] else DEFAULT_POSTER_URL
+# ==========================================
+# ВРЕМЕННО ЗАКОМЕНТИРОВАНО (ФУНКЦИИ ИЗМЕНЕНИЯ И УДАЛЕНИЯ)
+# ==========================================
 
-    try:
-        cursor.execute(
-            """
-            UPDATE movie
-            SET title = ?, release_year = ?, genre = ?, rating = ?, main_character = ?, description = ?
-            WHERE id = ?
-            """,
-            (
-                movie_data.title,
-                movie_data.release_year,
-                movie_data.genre,
-                movie_data.rating,
-                movie_data.main_character,
-                movie_data.description,
-                movie_id
-            )
-        )
-        conn.commit()
-        conn.close()
+# @app.put("/api/movies/{movie_id}", response_model=Movie)
+# def update_movie(movie_id: int, movie_data: MovieCreate):
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+#     
+#     # Сначала проверим, есть ли такой фильм
+#     cursor.execute("SELECT poster_url FROM movie WHERE id = ?", (movie_id,))
+#     row = cursor.fetchone()
+#     if row is None:
+#         conn.close()
+#         raise HTTPException(status_code=404, detail="Movie not found")
+#     
+#     current_poster = row["poster_url"] if row["poster_url"] else DEFAULT_POSTER_URL
+# 
+#     try:
+#         cursor.execute(
+#             """
+#             UPDATE movie
+#             SET title = ?, release_year = ?, genre = ?, rating = ?, main_character = ?, description = ?
+#             WHERE id = ?
+#             """,
+#             (
+#                 movie_data.title,
+#                 movie_data.release_year,
+#                 movie_data.genre,
+#                 movie_data.rating,
+#                 movie_data.main_character,
+#                 movie_data.description,
+#                 movie_id
+#             )
+#         )
+#         conn.commit()
+#         conn.close()
+# 
+#         return Movie(
+#             id=movie_id,
+#             poster_url=current_poster,
+#             **movie_data.model_dump()
+#         )
+#     except Exception as e:
+#         conn.rollback()
+#         conn.close()
+#         raise HTTPException(status_code=400, detail=f"Database error: {str(e)}")
 
-        return Movie(
-            id=movie_id,
-            poster_url=current_poster,
-            **movie_data.model_dump()
-        )
-    except Exception as e:
-        conn.rollback()
-        conn.close()
-        raise HTTPException(status_code=400, detail=f"Database error: {str(e)}")
 
-
-@app.delete("/api/movies/{movie_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_movie(movie_id: int):
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    
-    # Проверяем существование
-    cursor.execute("SELECT id FROM movie WHERE id = ?", (movie_id,))
-    if cursor.fetchone() is None:
-        conn.close()
-        raise HTTPException(status_code=404, detail="Movie not found")
-
-    cursor.execute("DELETE FROM movie WHERE id = ?", (movie_id,))
-    conn.commit()
-    conn.close()
-    return None
+# @app.delete("/api/movies/{movie_id}", status_code=status.HTTP_204_NO_CONTENT)
+# def delete_movie(movie_id: int):
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+#     
+#     # Проверяем существование
+#     cursor.execute("SELECT id FROM movie WHERE id = ?", (movie_id,))
+#     if cursor.fetchone() is None:
+#         conn.close()
+#         raise HTTPException(status_code=404, detail="Movie not found")
+# 
+#     cursor.execute("DELETE FROM movie WHERE id = ?", (movie_id,))
+#     conn.commit()
+#     conn.close()
+#     return None
